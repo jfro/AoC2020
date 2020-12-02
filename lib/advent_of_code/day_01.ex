@@ -13,8 +13,12 @@ defmodule AdventOfCode.Day01 do
     result
   end
 
+  def num_stream(stream) do
+    stream |> Stream.map(&String.trim/1) |> Stream.map(&String.to_integer/1)
+  end
+
   def part1(args) do
-    stream1 = args |> Stream.map(&String.trim(&1)) |> Stream.map(&String.to_integer(&1))
+    stream1 = num_stream(args)
     stream2 = stream1
 
     result =
@@ -27,6 +31,33 @@ defmodule AdventOfCode.Day01 do
     elem(result, 0)
   end
 
+  def find_submatch([first | rest], target) do
+    subtarget = target - first
+
+    cond do
+      Enum.member?(rest, subtarget) ->
+        {first, subtarget}
+
+      Enum.count(rest) == 0 ->
+        :none
+
+      true ->
+        find_submatch(rest, target)
+    end
+  end
+
+  def find_match([first | rest]) do
+    target = 2020 - first
+
+    case find_submatch(rest, target) do
+      {second, third} -> {first, second, third}
+      :none -> find_match(rest)
+    end
+  end
+
   def part2(args) do
+    stream = num_stream(args)
+    {x, y, z} = stream |> Enum.to_list() |> find_match()
+    x * y * z
   end
 end
