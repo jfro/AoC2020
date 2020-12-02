@@ -18,17 +18,12 @@ defmodule AdventOfCode.Day01 do
   end
 
   def part1(args) do
-    stream1 = num_stream(args)
-    stream2 = stream1
+    list = num_stream(args) |> Enum.to_list()
 
-    result =
-      stream1
-      |> Enum.with_index()
-      |> Stream.map(&find_pair(&1, stream2))
-      |> Enum.filter(fn x -> x != nil end)
-      |> Enum.at(0)
-
-    elem(result, 0)
+    case find_submatch(list, 2020) do
+      {first, second} -> first * second
+      :none -> {:error, "No result found"}
+    end
   end
 
   def find_submatch([first | rest], target) do

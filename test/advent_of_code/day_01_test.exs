@@ -3,19 +3,19 @@ defmodule AdventOfCode.Day01Test do
 
   import AdventOfCode.Day01
 
-  @tag :skip
+  # @tag :skip
   test "part1" do
-    input = nil
+    input = File.stream!("data/day01p1.txt")
     result = part1(input)
 
-    assert result
+    assert result == 1_015_476
   end
 
-  @tag :skip
+  # @tag :skip
   test "part2" do
-    input = nil
+    input = File.stream!("data/day01p1.txt")
     result = part2(input)
 
-    assert result
+    assert result == 200_878_544
   end
 end
