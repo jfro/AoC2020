@@ -22,6 +22,8 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 aoc2020-*.tar
 
+# Ignore actual config
+/config/config.exs
 
 # Temporary files for e.g. tests
 /tmp
