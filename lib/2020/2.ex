@@ -1,5 +1,7 @@
-defmodule AdventOfCode.Day02 do
-  def check_pass(pass_line) do
+import AOC
+
+aoc 2020, 2 do
+  defp check_pass(pass_line) do
     [_match, min, max, letter, string] = Regex.run(~r/(\d+)\-(\d+)\s(\w):\s+(\w+)/, pass_line)
     map = String.codepoints(string) |> Enum.frequencies()
     min = String.to_integer(min)
@@ -11,7 +13,7 @@ defmodule AdventOfCode.Day02 do
     end
   end
 
-  def check_pass2(pass_line) do
+  defp check_pass2(pass_line) do
     [_match, pos1, pos2, letter, string] = Regex.run(~r/(\d+)\-(\d+)\s(\w):\s+(\w+)/, pass_line)
     chars = String.codepoints(string)
     pos1 = String.to_integer(pos1) - 1
@@ -26,17 +28,17 @@ defmodule AdventOfCode.Day02 do
     end
   end
 
-  def part1(args) do
-    args
-    |> Stream.map(&String.trim/1)
+  def p1 do
+    input_stream()
+    # |> Stream.map(&String.trim/1)
     |> Stream.map(&check_pass/1)
     |> Stream.filter(fn x -> x end)
     |> Enum.count()
   end
 
-  def part2(args) do
-    args
-    |> Stream.map(&String.trim/1)
+  def p2 do
+    input_stream()
+    # |> Stream.map(&String.trim/1)
     |> Stream.map(&check_pass2/1)
     |> Stream.filter(fn x -> x end)
     |> Enum.count()
