@@ -1,0 +1,5 @@
+%{
+  "advent_of_code_utils": {:hex, :advent_of_code_utils, "0.1.3", "bea8823c30266723dab2a13fe741e877f9c5592b24acccfe2a801ae38bc697ad", [:mix], [], "hexpm", "3a3c66d12f82d9e38623c9d6c094c767a876de0ad4e8b13a5e2c0abf1d76010e"},
+  "benchee": {:hex, :benchee, "1.0.1", "66b211f9bfd84bd97e6d1beaddf8fc2312aaabe192f776e8931cb0c16f53a521", [:mix], [{:deep_merge, "~> 1.0", [hex: :deep_merge, repo: "hexpm", optional: false]}], "hexpm", "3ad58ae787e9c7c94dd7ceda3b587ec2c64604563e049b2a0e8baafae832addb"},
+  "deep_merge": {:hex, :deep_merge, "1.0.0", "b4aa1a0d1acac393bdf38b2291af38cb1d4a52806cf7a4906f718e1feb5ee961", [:mix], [], "hexpm", "ce708e5f094b9cd4e8f2be4f00d2f4250c4095be93f8cd6d018c753894885430"},
+}
