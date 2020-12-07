@@ -1,8 +1,8 @@
 import AOC
 
 aoc 2020, 4 do
-  #   def input_stream() do
-  #     "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
+  # def input_stream() do
+  #   "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
   # byr:1937 iyr:2017 cid:147 hgt:183cm
 
   # iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
@@ -15,7 +15,8 @@ aoc 2020, 4 do
 
   # hcl:#cfa07d eyr:2025 pid:166559648
   # iyr:2011 ecl:brn hgt:59in" |> String.split("\n\n") |> Stream.map(&String.trim/1)
-  #   end
+  # end
+
   def input_stream() do
     input_string() |> String.split("\n\n") |> Stream.map(&String.trim/1)
   end
@@ -29,6 +30,55 @@ aoc 2020, 4 do
     end)
   end
 
+  defp validate_year(year, range) do
+    Enum.member?(range, String.to_integer(year))
+  end
+
+  defp validate_height(height) do
+    validate_value = fn value, type ->
+      case type do
+        "in" -> Enum.member?(59..76, value)
+        "cm" -> Enum.member?(150..193, value)
+      end
+    end
+
+    case Regex.run(~r/(\d+)(in|cm)/, height) do
+      [_match, value, type] -> validate_value.(String.to_integer(value), type)
+      nil -> false
+    end
+  end
+
+  defp validate_hcl(hcl) do
+    case Regex.run(~r/#([a-f0-9]{6})/, hcl) do
+      [_match, _value] ->
+        true
+
+      nil ->
+        false
+    end
+  end
+
+  defp validate_ecl(ecl) do
+    valid = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
+    Enum.member?(valid, ecl)
+  end
+
+  defp validate_pid(pid) do
+    case Regex.run(~r/\d{9}/, pid) do
+      [_match] ->
+        true
+
+      nil ->
+        false
+    end
+  end
+
+  defp validate_passport_fields(passport) do
+    validate_year(passport[:byr], 1920..2002) && validate_year(passport[:iyr], 2010..2020) &&
+      validate_year(passport[:eyr], 2020..2030) && validate_height(passport[:hgt]) &&
+      validate_hcl(passport[:hcl]) && validate_ecl(passport[:ecl]) && validate_pid(passport[:pid])
+  end
+
   defp validate_passport(passport) do
     case passport do
       %{:byr => _, :iyr => _, :eyr => _, :hgt => _, :hcl => _, :ecl => _, :pid => _} -> true
@@ -38,13 +88,18 @@ aoc 2020, 4 do
 
   def p1 do
     input_stream()
-    |> Stream.map(&String.split(&1, [" ", "\n"]))
+    |> Stream.map(&String.split(&1, [" ", "\n"], trim: true))
     |> Stream.map(&gen_map/1)
-    |> Stream.map(&validate_passport/1)
-    |> Stream.filter(fn x -> x end)
+    |> Stream.filter(&validate_passport/1)
     |> Enum.count()
   end
 
   def p2 do
+    input_stream()
+    |> Stream.map(&String.split(&1, [" ", "\n"], trim: true))
+    |> Stream.map(&gen_map/1)
+    |> Stream.filter(&validate_passport/1)
+    |> Stream.filter(&validate_passport_fields/1)
+    |> Enum.count()
   end
 end
